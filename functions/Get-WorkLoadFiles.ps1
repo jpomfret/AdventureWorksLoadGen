@@ -1,14 +1,17 @@
 
 function Get-WorkloadFiles {
     param (
-        $WorkloadType
+        $WorkloadType,
+        $Path = '.\Internal\SQL\'
     )
 
-    # based on workload get files
-    # be able to return multiple files
+    $files = @()
+    foreach($file in $(Get-ChildItem -Path $Path)) {
+        if($(get-content $file.FullName -First 1) -match $WorkloadType) {
+            $files += $file.FullName
+        }
+    }
 
-    return $(Get-ChildItem -Path .\internal\SQL\InsertJess.sql).FullName
+    return $files
 
-
-    # pass in own location of scripts?
 }
